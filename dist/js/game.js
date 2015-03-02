@@ -163,15 +163,13 @@ Menu.prototype = {
 
   },
   create: function() {
-    var style = { font: '65px Arial', fill: '#ffffff', align: 'center'};
-    this.sprite = this.game.add.sprite(this.game.world.centerX, 138, 'yeoman');
-    this.sprite.anchor.setTo(0.5, 0.5);
+    this.game.stage.backgroundColor = '#3F7CAC';
+    var style = { font: '30px Arial', fill: '#ffffff', align: 'center'};
+    this.sprite = this.game.add.sprite(this.game.world.centerX, 138, 'warped');
+    this.sprite.anchor.setTo(0.5);
 
-    this.titleText = this.game.add.text(this.game.world.centerX, 300, '\'Allo, \'Allo!', style);
-    this.titleText.anchor.setTo(0.5, 0.5);
-
-    this.instructionsText = this.game.add.text(this.game.world.centerX, 400, 'Click anywhere to play "Click The Yeoman Logo"', { font: '16px Arial', fill: '#ffffff', align: 'center'});
-    this.instructionsText.anchor.setTo(0.5, 0.5);
+    this.instructionsText = this.game.add.text(this.game.world.centerX, this.game.world.centerY + 100, 'Click anywhere to play !', style);
+    this.instructionsText.anchor.setTo(0.5);
 
     this.sprite.angle = -20;
     this.game.add.tween(this.sprite).to({angle: 20}, 1000, Phaser.Easing.Linear.NONE, true, 0, 1000, true);
@@ -193,10 +191,9 @@ function Play() {
 }
 Play.prototype = {
   create: function () {
+    this.game.add.tileSprite(0, 0, 4176, 2112, 'background');
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 1200;
-
-    this.game.stage.backgroundColor = '#3F7CAC';
 
     this.player = new Player(this.game, this.game.width / 2, this.game.height / 2);
     this.game.add.existing(this.player);
@@ -213,14 +210,28 @@ Play.prototype = {
     this.piques = this.game.add.group();
 
     // add a timer
-    this.piqueGenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 0.25, this.generatePiques, this);
+    this.piqueGenerator = this.game.time.events.loop(Phaser.Timer.SECOND * 1, this.generatePiques, this);
     this.piqueGenerator.timer.start();
 
+    //scoring
+    this.score = 0;
+
+    var style = { font: '30px Arial', fill: '#ffffff', align: 'center'};
+    this.scoreText = this.game.add.text(this.game.width/2, 30, this.score.toString(), style);
+    this.scoreText.anchor.setTo(0.5);
   },
   update: function () {
     this.piques.forEach(function (piqueGroup) {
+      this.checkScore(piqueGroup);
       this.game.physics.arcade.collide(this.player, piqueGroup, this.deathHandler, null, this);
     }, this);
+  },
+  checkScore: function(piqueGroup) {
+    if(piqueGroup.exists && !piqueGroup.hasScored && piqueGroup.topPique.world.x <= this.player.world.x) {
+      piqueGroup.hasScored = true;
+      this.score++;
+      this.scoreText.setText(this.score.toString());
+    }
   },
   reverseGravity: function () {
     if (this.orientation === 'down') {
@@ -251,7 +262,7 @@ Play.prototype = {
   },
   render: function () {
     // this.game.debug.bodyInfo(this.player, 16, 24);
-    this.game.debug.body(this.player);
+    //this.game.debug.body(this.player);
     function renderGroup(member) {
       game.debug.body(member);
     }
@@ -274,8 +285,8 @@ Preload.prototype = {
 
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
-    this.load.image('yeoman', 'assets/yeoman-logo.png');
-
+    this.load.image('warped', 'assets/logo-warped-large.png');
+    this.load.image('background','assets/background.png');
     this.load.spritesheet('player', 'assets/img/warp.png', 54, 54);
     this.load.spritesheet('pique', 'assets/img/pique.png', 50, 300);
   },
@@ -284,7 +295,7 @@ Preload.prototype = {
   },
   update: function () {
     if (!!this.ready) {
-      this.game.state.start('play');
+      this.game.state.start('menu');
     }
   },
   onLoadComplete: function () {

@@ -3,9 +3,7 @@ body {
 }
 
 #warped-runner {
-  border: 2px solid white;
   width: 600px;
   margin-left: auto;
   margin-right: auto;
-  cursor: pointer;
 }

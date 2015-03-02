@@ -11,8 +11,8 @@ Preload.prototype = {
 
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
-    this.load.image('yeoman', 'assets/yeoman-logo.png');
-
+    this.load.image('warped', 'assets/logo-warped-large.png');
+    this.load.image('background','assets/background.png');
     this.load.spritesheet('player', 'assets/img/warp.png', 54, 54);
     this.load.spritesheet('pique', 'assets/img/pique.png', 50, 300);
   },
@@ -21,7 +21,7 @@ Preload.prototype = {
   },
   update: function () {
     if (!!this.ready) {
-      this.game.state.start('play');
+      this.game.state.start('menu');
     }
   },
   onLoadComplete: function () {
