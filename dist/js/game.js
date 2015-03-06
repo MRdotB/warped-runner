@@ -126,27 +126,36 @@ Boot.prototype = {
 module.exports = Boot;
 
 },{}],6:[function(require,module,exports){
-
 'use strict';
-function GameOver() {}
+function GameOver() {
+}
 
 GameOver.prototype = {
   preload: function () {
 
   },
   create: function () {
-    var style = { font: '65px Arial', fill: '#ffffff', align: 'center'};
-    this.titleText = this.game.add.text(this.game.world.centerX,100, 'Game Over!', style);
+    this.game.add.tileSprite(0, 0, 4176, 2112, 'background');
+    var style = {font: '65px Arial', fill: '#ffffff', align: 'center'};
+    this.titleText = this.game.add.text(this.game.world.centerX, 100, 'Game Over!', style);
     this.titleText.anchor.setTo(0.5, 0.5);
 
-    this.congratsText = this.game.add.text(this.game.world.centerX, 200, 'You Win!', { font: '32px Arial', fill: '#ffffff', align: 'center'});
+    this.congratsText = this.game.add.text(this.game.world.centerX, 200, 'You Win!', {
+      font: '32px Arial',
+      fill: '#ffffff',
+      align: 'center'
+    });
     this.congratsText.anchor.setTo(0.5, 0.5);
 
-    this.instructionText = this.game.add.text(this.game.world.centerX, 300, 'Click To Play Again', { font: '16px Arial', fill: '#ffffff', align: 'center'});
+    this.instructionText = this.game.add.text(this.game.world.centerX, 300, 'Click To Play Again', {
+      font: '16px Arial',
+      fill: '#ffffff',
+      align: 'center'
+    });
     this.instructionText.anchor.setTo(0.5, 0.5);
   },
   update: function () {
-    if(this.game.input.activePointer.justPressed()) {
+    if (this.game.input.activePointer.justPressed()) {
       this.game.state.start('play');
     }
   }
@@ -163,7 +172,7 @@ Menu.prototype = {
 
   },
   create: function() {
-    this.game.stage.backgroundColor = '#3F7CAC';
+    this.game.add.tileSprite(0, 0, 4176, 2112, 'background');
     var style = { font: '30px Arial', fill: '#ffffff', align: 'center'};
     this.sprite = this.game.add.sprite(this.game.world.centerX, 138, 'warped');
     this.sprite.anchor.setTo(0.5);
@@ -216,8 +225,8 @@ Play.prototype = {
     //scoring
     this.score = 0;
 
-    var style = { font: '30px Arial', fill: '#ffffff', align: 'center'};
-    this.scoreText = this.game.add.text(this.game.width/2, 30, this.score.toString(), style);
+    var style = {font: '30px Arial', fill: '#ffffff', align: 'center'};
+    this.scoreText = this.game.add.text(this.game.width / 2, 30, this.score.toString(), style);
     this.scoreText.anchor.setTo(0.5);
   },
   update: function () {
@@ -226,8 +235,8 @@ Play.prototype = {
       this.game.physics.arcade.collide(this.player, piqueGroup, this.deathHandler, null, this);
     }, this);
   },
-  checkScore: function(piqueGroup) {
-    if(piqueGroup.exists && !piqueGroup.hasScored && piqueGroup.topPique.world.x <= this.player.world.x) {
+  checkScore: function (piqueGroup) {
+    if (piqueGroup.exists && !piqueGroup.hasScored && piqueGroup.topPique.world.x <= this.player.world.x) {
       piqueGroup.hasScored = true;
       this.score++;
       this.scoreText.setText(this.score.toString());
@@ -261,11 +270,8 @@ Play.prototype = {
     this.game.state.start('gameover');
   },
   render: function () {
-    // this.game.debug.bodyInfo(this.player, 16, 24);
+    //this.game.debug.bodyInfo(this.player, 16, 24);
     //this.game.debug.body(this.player);
-    function renderGroup(member) {
-      game.debug.body(member);
-    }
   }
 };
 

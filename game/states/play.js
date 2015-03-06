@@ -30,8 +30,8 @@ Play.prototype = {
     //scoring
     this.score = 0;
 
-    var style = { font: '30px Arial', fill: '#ffffff', align: 'center'};
-    this.scoreText = this.game.add.text(this.game.width/2, 30, this.score.toString(), style);
+    var style = {font: '30px Arial', fill: '#ffffff', align: 'center'};
+    this.scoreText = this.game.add.text(this.game.width / 2, 30, this.score.toString(), style);
     this.scoreText.anchor.setTo(0.5);
   },
   update: function () {
@@ -40,8 +40,8 @@ Play.prototype = {
       this.game.physics.arcade.collide(this.player, piqueGroup, this.deathHandler, null, this);
     }, this);
   },
-  checkScore: function(piqueGroup) {
-    if(piqueGroup.exists && !piqueGroup.hasScored && piqueGroup.topPique.world.x <= this.player.world.x) {
+  checkScore: function (piqueGroup) {
+    if (piqueGroup.exists && !piqueGroup.hasScored && piqueGroup.topPique.world.x <= this.player.world.x) {
       piqueGroup.hasScored = true;
       this.score++;
       this.scoreText.setText(this.score.toString());
@@ -75,11 +75,8 @@ Play.prototype = {
     this.game.state.start('gameover');
   },
   render: function () {
-    // this.game.debug.bodyInfo(this.player, 16, 24);
+    //this.game.debug.bodyInfo(this.player, 16, 24);
     //this.game.debug.body(this.player);
-    function renderGroup(member) {
-      game.debug.body(member);
-    }
   }
 };
 

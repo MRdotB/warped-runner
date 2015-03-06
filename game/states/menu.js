@@ -7,7 +7,7 @@ Menu.prototype = {
 
   },
   create: function() {
-    this.game.stage.backgroundColor = '#3F7CAC';
+    this.game.add.tileSprite(0, 0, 4176, 2112, 'background');
     var style = { font: '30px Arial', fill: '#ffffff', align: 'center'};
     this.sprite = this.game.add.sprite(this.game.world.centerX, 138, 'warped');
     this.sprite.anchor.setTo(0.5);
